@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/element_main_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ViajesCreadosElement">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/origen"
+        android:gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Origen" />
+    <TextView
+        android:layout_marginStart="10pt"
+        android:id="@+id/destino"
+        android:layout_toEndOf="@+id/origen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Destino" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fecha"
+        android:text="15/07/2018 15:00:00"
+        android:layout_below="@+id/destino"/>
+
+    <TextView
+        android:id="@+id/vehiculo"
+        android:text="Marca1 Modelo1"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:gravity="right" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/equipajemax"
+        android:text="15 maletas"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/vehiculo" />
+</RelativeLayout>
