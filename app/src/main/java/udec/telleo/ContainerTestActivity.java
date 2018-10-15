@@ -9,8 +9,10 @@ import android.widget.LinearLayout;
 
 import java.util.List;
 
-import udec.telleo.apiclient.AsyncCall;
-import udec.telleo.apiclient.Client;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import udec.telleo.apiclient.TeLleoService;
 import udec.telleo.model.Viaje;
 
 public class ContainerTestActivity extends AppCompatActivity {
@@ -20,14 +22,15 @@ public class ContainerTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container_test);
 
-        Client.listViajesDeConductor(getIntent().getStringExtra("username"), this, new AsyncCall<List<Viaje>>() {
+        Call<List<Viaje>> call = TeLleoService.getService().getViajesDeConductor(getIntent().getStringExtra("username"));
+        call.enqueue(new Callback<List<Viaje>>() {
             @Override
-            public void onSuccess(List<Viaje> res) {
+            public void onResponse(Call<List<Viaje>> call, Response<List<Viaje>> res) {
                 ((LinearLayout)findViewById(R.id.fragment_container)).removeAllViews();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 if(res != null) {
-                    for (Viaje viaje : res) {
+                    for (Viaje viaje : res.body()) {
                         Log.d("viendo", viaje.toString());
                         ViajesCreadosElement element = ViajesCreadosElement.newInstance(viaje.getId());
                         fragmentTransaction.add(R.id.fragment_container, element);
@@ -38,10 +41,9 @@ public class ContainerTestActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Throwable err) {
+            public void onFailure(Call<List<Viaje>> call, Throwable t) {
 
             }
         });
-
     }
 }

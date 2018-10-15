@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-import udec.telleo.apiclient.AsyncCall;
-import udec.telleo.apiclient.Client;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import udec.telleo.apiclient.TeLleoService;
 import udec.telleo.model.Viaje;
 
 
@@ -68,9 +70,10 @@ public class ViajesCreadosElement extends Fragment implements View.OnClickListen
         final View view = inflater.inflate(R.layout.fragment_viajes_creados_element, container, false);
         view.findViewById(R.id.element_main_layout).setOnClickListener(this);
         // se que no deberia, perdon :(
-        Client.getViaje(idViaje, this.getContext(), new AsyncCall<Viaje>() {
+        TeLleoService.getService().getDatosViaje(idViaje).enqueue(new Callback<Viaje>() {
             @Override
-            public void onSuccess(Viaje viaje) {
+            public void onResponse(Call<Viaje> call, Response<Viaje> response) {
+                Viaje viaje = response.body();
                 if(viaje != null){
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                     ((TextView)view.findViewById(R.id.origen)).setText(viaje.getOrigen());
@@ -82,7 +85,7 @@ public class ViajesCreadosElement extends Fragment implements View.OnClickListen
             }
 
             @Override
-            public void onFailure(Throwable err) {
+            public void onFailure(Call<Viaje> call, Throwable t) {
 
             }
         });
