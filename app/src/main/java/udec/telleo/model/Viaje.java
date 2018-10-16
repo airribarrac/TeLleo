@@ -2,10 +2,11 @@ package udec.telleo.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Viaje {
+public class Viaje implements Serializable{
     //region Variables
     @SerializedName("id")
     private int id;

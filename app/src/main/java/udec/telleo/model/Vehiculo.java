@@ -2,7 +2,9 @@ package udec.telleo.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Vehiculo {
+import java.io.Serializable;
+
+public class Vehiculo implements Serializable {
     //region Variables
     @SerializedName("patente")
     private String patente;

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/nombre_persona"
+        android:text="nombre persona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/origen"
+        android:text="Origen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombre_persona"/>
+
+    <TextView
+        android:id="@+id/separador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombre_persona"
+        android:layout_toEndOf="@+id/origen"
+        android:text=" -> " />
+
+    <TextView
+        android:id="@+id/destino"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombre_persona"
+        android:layout_toEndOf="@+id/separador"
+        android:text="destino" />
+
+    <TextView
+        android:id="@+id/asientos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="asientos: 2" />
+
+    <TextView
+        android:id="@+id/maletas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/asientos"
+        android:text="maletas: 2" />
+
+    <TextView
+        android:id="@+id/estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/nombre_persona"
+        android:text="estado: aprobada" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/origen">
+
+        <Button
+            android:id="@+id/aceptar_button"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Aceptar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|"/>
+
+        <Button
+            android:id="@+id/rechazar_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Rechazar" />
+
+    </LinearLayout>
+</RelativeLayout>

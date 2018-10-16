@@ -1,11 +1,8 @@
 package udec.telleo;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -14,30 +11,27 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import udec.telleo.apiclient.TeLleoService;
 import udec.telleo.model.Viaje;
+import udec.telleo.viewadapters.ViajesAdapter;
 
 public class ContainerTestActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container_test);
+        ViajesAdapter adapter = new ViajesAdapter(this, R.id.fragment_container);
+        actualizarViajesAdapter(getIntent().getStringExtra("username"), adapter);
+        ListView lv = findViewById(R.id.fragment_container);
+        lv.setAdapter(adapter);
+    }
 
-        Call<List<Viaje>> call = TeLleoService.getService().getViajesDeConductor(getIntent().getStringExtra("username"));
+    private void actualizarViajesAdapter(String username, final ViajesAdapter adapter){
+        Call<List<Viaje>> call = TeLleoService.getService(getApplicationContext()).getViajesDeConductor(username);
         call.enqueue(new Callback<List<Viaje>>() {
             @Override
             public void onResponse(Call<List<Viaje>> call, Response<List<Viaje>> res) {
-                ((LinearLayout)findViewById(R.id.fragment_container)).removeAllViews();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                if(res != null) {
-                    for (Viaje viaje : res.body()) {
-                        Log.d("viendo", viaje.toString());
-                        ViajesCreadosElement element = ViajesCreadosElement.newInstance(viaje.getId());
-                        fragmentTransaction.add(R.id.fragment_container, element);
-                    }
-                }
-                fragmentTransaction.commit();
-
+                adapter.setCollection(res.body());
             }
 
             @Override

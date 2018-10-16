@@ -16,4 +16,7 @@ public interface TeLleoServiceDefinition {
 
     @GET("viajes/{viajeid}")
     Call<Viaje> getDatosViaje(@Path("viajeid")int idViaje);
+
+    @GET("conductores/{conductor}/viajes/{viajeid}/reservas")
+    Call<List<Reserva>> getReservasRecibidas(@Path("conductor")String conductor, @Path("viajeid") int idViaje);
 }

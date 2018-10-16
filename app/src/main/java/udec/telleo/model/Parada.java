@@ -2,9 +2,10 @@ package udec.telleo.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Parada {
+public class Parada implements Serializable {
     @SerializedName("idViaje")
     private int idViaje;
 
