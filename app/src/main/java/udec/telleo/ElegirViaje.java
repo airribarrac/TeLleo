@@ -2,6 +2,7 @@ package udec.telleo;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -117,29 +118,12 @@ public class ElegirViaje extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Call<List<Viaje>> call = TeLleoService.getService(ElegirViaje.this).
-                    getViajes(orDes[0].getName().toString(),orDes[1].getName().toString(),
-                            finicio+"T00:00:00.000Z",ffinal+"T23:59:59.000Z",1,0);
-            Log.v("call",call.request().url().toString());
-            call.enqueue(new Callback<List<Viaje>>() {
-                @Override
-                public void onResponse(Call<List<Viaje>> call, Response<List<Viaje>> response) {
-                    if(!response.isSuccessful()){
-                        Log.e("response","fallo "+response.code());
-
-                    }
-                    Log.d("respuesta","  "+response.toString());
-                    for(Viaje r : response.body()){
-                        Log.d("reserva:", r.toString());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Viaje>> call, Throwable t) {
-                    Log.d("ERROR", t.toString());
-                }
-            });
-            Log.v("asd",ti.getText().toString());
+            Intent i = new Intent(ElegirViaje.this,ViajesBuscados.class);
+            i.putExtra("origen",orDes[0].getName().toString());
+            i.putExtra("destino",orDes[1].getName().toString());
+            i.putExtra("finicio",finicio+"T00:00:00.000Z");
+            i.putExtra("ffinal",ffinal+"T23:59:59.000Z");
+            startActivity(i);
 
         }
     }

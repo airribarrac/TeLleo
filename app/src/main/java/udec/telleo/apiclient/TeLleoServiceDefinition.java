@@ -2,8 +2,11 @@ package udec.telleo.apiclient;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import udec.telleo.model.*;
@@ -25,5 +28,6 @@ public interface TeLleoServiceDefinition {
     Call<List<Viaje>> getViajes(@Query("origen") String origen, @Query("destino") String destino,
             @Query("fechaminima") String fechamin, @Query("fechamaxima") String fechamax,
             @Query("asientos") int asientos, @Query("maletas") int maletas);
-
+    @POST("viajes/{viajeid}/pasajeros")
+    Call<ResponseBody> postReserva(@Body Reserva res, @Path("viajeid") int viajeid);
 }

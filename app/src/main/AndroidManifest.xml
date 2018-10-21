@@ -3,7 +3,6 @@
     package="udec.telleo">
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +11,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDt-Ud13FeFMa3eQXoaqQOp8ealZ0tPKQE"/>
+            android:value="AIzaSyDt-Ud13FeFMa3eQXoaqQOp8ealZ0tPKQE" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -21,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ElegirViaje"></activity>
+        <activity android:name=".ElegirViaje" />
+        <activity android:name=".ViajesBuscados"></activity>
     </application>
 
 </manifest>
