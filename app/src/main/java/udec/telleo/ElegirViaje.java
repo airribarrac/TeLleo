@@ -21,8 +21,18 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import udec.telleo.apiclient.TeLleoService;
+import udec.telleo.model.Reserva;
+import udec.telleo.model.Viaje;
 
 public class ElegirViaje extends AppCompatActivity {
     private EditText ti,tf;
@@ -79,7 +89,6 @@ public class ElegirViaje extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            Log.v("asd",ti.getText().toString());
             if(orDes[0]==null){
                 Toast.makeText(ElegirViaje.this,"Ingrese origen",Toast.LENGTH_LONG).show();
                 return;
@@ -88,16 +97,54 @@ public class ElegirViaje extends AppCompatActivity {
                 Toast.makeText(ElegirViaje.this,"Ingrese destino",Toast.LENGTH_LONG).show();
                 return;
             }
-            if(ti.getText().toString().equals("") || tf.getText().toString().equals("   ")){
+            if(ti.getText().toString().equals("") || tf.getText().toString().equals("")){
                 Toast.makeText(ElegirViaje.this,"Ingrese fechas",Toast.LENGTH_LONG).show();
                 return;
             }
             Log.v("ALO","VOY A BUSCAR");
 
             Log.v("origen", (String) orDes[0].getName());
+            SimpleDateFormat dmy = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat ymd = new SimpleDateFormat("yyyy-MM-dd");
+            String finicio = null,ffinal=null;
+            try {
+                finicio = ymd.format(dmy.parse(ti.getText().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try {
+                ffinal = ymd.format(dmy.parse(tf.getText().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Call<List<Viaje>> call = TeLleoService.getService(ElegirViaje.this).
+                    getViajes(orDes[0].getName().toString(),orDes[1].getName().toString(),
+                            finicio+"T00:00:00.000Z",ffinal+"T23:59:59.000Z",1,0);
+            Log.v("call",call.request().url().toString());
+            call.enqueue(new Callback<List<Viaje>>() {
+                @Override
+                public void onResponse(Call<List<Viaje>> call, Response<List<Viaje>> response) {
+                    if(!response.isSuccessful()){
+                        Log.e("response","fallo "+response.code());
+
+                    }
+                    Log.d("respuesta","  "+response.toString());
+                    for(Viaje r : response.body()){
+                        Log.d("reserva:", r.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Viaje>> call, Throwable t) {
+                    Log.d("ERROR", t.toString());
+                }
+            });
+            Log.v("asd",ti.getText().toString());
 
         }
     }
+
+
 
     private class FechaListener implements View.OnClickListener{
         private EditText t;

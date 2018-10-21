@@ -5,6 +5,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import udec.telleo.model.*;
 
 public interface TeLleoServiceDefinition {
@@ -19,4 +20,10 @@ public interface TeLleoServiceDefinition {
 
     @GET("conductores/{conductor}/viajes/{viajeid}/reservas")
     Call<List<Reserva>> getReservasRecibidas(@Path("conductor")String conductor, @Path("viajeid") int idViaje);
+
+    @GET("viajes")
+    Call<List<Viaje>> getViajes(@Query("origen") String origen, @Query("destino") String destino,
+            @Query("fechaminima") String fechamin, @Query("fechamaxima") String fechamax,
+            @Query("asientos") int asientos, @Query("maletas") int maletas);
+
 }
