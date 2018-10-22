@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.PUT;
 import udec.telleo.model.*;
 
 public interface TeLleoServiceDefinition {
@@ -24,6 +25,8 @@ public interface TeLleoServiceDefinition {
     @GET("conductores/{conductor}/viajes/{viajeid}/reservas")
     Call<List<Reserva>> getReservasRecibidas(@Path("conductor")String conductor, @Path("viajeid") int idViaje);
 
+    @PUT("conductores/{conductor}/viajes/{viajeid}/reservas/{idreserva}")
+    Call<ResponseBody> setEstadoReserva(@Path("conductor") String conductor, @Path("viajeid") int idViaje, @Path("idreserva") int idReserva, @Body Reserva reserva);
     @GET("viajes")
     Call<List<Viaje>> getViajes(@Query("origen") String origen, @Query("destino") String destino,
             @Query("fechaminima") String fechamin, @Query("fechamaxima") String fechamax,
