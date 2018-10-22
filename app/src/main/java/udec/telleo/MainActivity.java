@@ -16,13 +16,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 /////// agregar boton a esta wea
-        Intent intent = new Intent(this, ViajesCreadosActivity.class);
         // rico login ctm
         SharedPreferences.Editor preferences = getSharedPreferences("datos", MODE_PRIVATE).edit();
         preferences.putString("username", "test1");
         preferences.apply();
-        intent.putExtra("username", "test1");
-        startActivity(intent);
 
         //boton de mi wea
         Button miboton = (Button) findViewById(R.id.miboton);
@@ -40,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this,ElegirViaje.class);
         startActivity(i);
 
+    }
+
+
+    public void verViajesCreadosClick(View view) {
+        Intent intent = new Intent(this, ViajesCreadosActivity.class);
+
+        intent.putExtra("username", "test1");
+        startActivity(intent);
 
     }
 }
