@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, ContainerTestActivity.class);
+        Intent intent = new Intent(this, ViajesCreadosActivity.class);
         // rico login ctm
         SharedPreferences.Editor preferences = getSharedPreferences("datos", MODE_PRIVATE).edit();
         preferences.putString("username", "test1");

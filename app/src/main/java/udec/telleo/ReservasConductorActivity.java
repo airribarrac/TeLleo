@@ -1,5 +1,6 @@
 package udec.telleo;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class ReservasConductorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservas_conductor);
         viaje = (Viaje)getIntent().getSerializableExtra("viaje");
-        ReservasAdapter adapter = new ReservasAdapter(this, R.id.reservas_viaje_container);
+        ReservasAdapter adapter = new ReservasAdapter(this, R.id.reservas_viaje_container, viaje);
         String username = getSharedPreferences("datos", MODE_PRIVATE).getString("username", "");
         actualizarReservas(username, viaje.getId(), adapter);
         ListView view = findViewById(R.id.reservas_viaje_container);
@@ -47,6 +49,12 @@ public class ReservasConductorActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Reserva>> call, Throwable t) {
+                Context context = getApplicationContext();
+                CharSequence text = "No se pudo obtener las reservas del viaje     :(";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
                 Log.d("ERROR", t.toString());
             }
         });
