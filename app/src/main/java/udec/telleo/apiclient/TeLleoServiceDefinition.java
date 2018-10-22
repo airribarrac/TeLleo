@@ -28,6 +28,8 @@ public interface TeLleoServiceDefinition {
     Call<List<Viaje>> getViajes(@Query("origen") String origen, @Query("destino") String destino,
             @Query("fechaminima") String fechamin, @Query("fechamaxima") String fechamax,
             @Query("asientos") int asientos, @Query("maletas") int maletas);
+                                @Query("fechaminima") String fechamin, @Query("fechamaxima") String fechamax,
+                                @Query("asientos") int asientos, @Query("maletas") int maletas);
     @POST("viajes/{viajeid}/pasajeros")
     Call<ResponseBody> postReserva(@Body Reserva res, @Path("viajeid") int viajeid);
 }
