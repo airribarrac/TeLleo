@@ -30,4 +30,6 @@ public interface TeLleoServiceDefinition {
                                 @Query("asientos") int asientos, @Query("maletas") int maletas);
     @POST("viajes/{viajeid}/pasajeros")
     Call<ResponseBody> postReserva(@Body Reserva res, @Path("viajeid") int viajeid);
+    @POST("/conductores/{conductor}/viajes")
+    Call<ResponseBody> postViaje(@Body Viaje vi, @Path("conductor") String conductor);
 }
