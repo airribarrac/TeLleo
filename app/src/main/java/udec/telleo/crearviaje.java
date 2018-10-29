@@ -76,6 +76,9 @@ public class crearviaje extends AppCompatActivity {
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(!response.isSuccessful()){
+                            Log.v("alo", String.valueOf(response.code()));
+                        }
                         Toast.makeText(crearviaje.this,"Viaje creado",Toast.LENGTH_LONG).show();
                     }
 

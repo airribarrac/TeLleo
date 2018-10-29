@@ -7,28 +7,58 @@
     tools:context="udec.telleo.MainActivity">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/abrir_elegir_vaje"
-            android:text="elegir viaje"
-            android:onClick="abrirElegirViaje"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/miboton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crear viaje" />
-        <Button
-            android:onClick="verViajesCreadosClick"
-            android:id="@+id/ver_viajes_creados"
-            android:layout_width="wrap_content"
-            android:text="Ver viajes creados"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/textusuario"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Usuario"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <EditText
+        android:id="@+id/textcontra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/textusuario"
+        app:layout_constraintTop_toBottomOf="@+id/textusuario" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="204dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <Button
+        android:id="@+id/botonlogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="loguear"
+        android:text="Login"
+        app:layout_constraintEnd_toEndOf="@+id/textcontra"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textcontra"
+        app:layout_constraintTop_toBottomOf="@+id/textcontra" />
+
+    <TextView
+        android:id="@+id/textregistro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Registrarse"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/botonlogin" />
 </android.support.constraint.ConstraintLayout>
