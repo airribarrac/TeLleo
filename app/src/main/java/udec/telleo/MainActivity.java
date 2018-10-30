@@ -1,7 +1,9 @@
 package udec.telleo;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loguear(View view) {
+
         if(usuario.getText().toString().equals("")){
             Toast.makeText(this,"Ingrese usuario",Toast.LENGTH_LONG).show();
             Animation shake = AnimationUtils.loadAnimation(getApplicationContext(),
@@ -53,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void verViajesCreadosClick(View view) {
         Intent intent = new Intent(this, ViajesCreadosActivity.class);
+
+        intent.putExtra("username", "test1");
+        startActivity(intent);
+
+    }
+    public void registrarse(View view){
+        Intent intent = new Intent(this, Registro.class);
 
         intent.putExtra("username", "test1");
         startActivity(intent);
