@@ -2,9 +2,11 @@ package udec.telleo.apiclient;
 
 import java.util.List;
 
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -36,5 +38,11 @@ public interface TeLleoServiceDefinition {
 
     @POST("/conductores/{conductor}/viajes")
     Call<ResponseBody> postViaje(@Body Viaje vi, @Path("conductor") String conductor);
+
+    @GET("pasajeros/{pasajero}/reservas")
+    Call<List<Reserva>> getReservaPasajero(@Path("pasajero") String pasajero);
+
+    @DELETE("pasajeros/{pasajero}/reservas/{reservaID}")
+    Call<ResponseBody> deleteReserva(@Path("pasajero") String pasajero, @Path("reservaid") int reservaid);
 
 }
