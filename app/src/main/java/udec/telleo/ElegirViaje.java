@@ -166,6 +166,7 @@ public class ElegirViaje extends AppCompatActivity {
         }
         @Override
         public void onPlaceSelected(Place place) {
+
             if(esOr) {
                 orDes[0]=place;
             } else {

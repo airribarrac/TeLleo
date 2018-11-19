@@ -119,7 +119,7 @@ public class crearviaje extends AppCompatActivity {
     }
     private String getOrigen()
     {
-        return ((EditText)findViewById(R.id.textOrigen)).getText().toString();
+        return "poto";
     }
     private String getDestino()
     {
