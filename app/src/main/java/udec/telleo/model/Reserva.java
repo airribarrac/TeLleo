@@ -3,6 +3,7 @@ package udec.telleo.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Reserva implements Serializable {
     public static final int PENDIENTE = 1, APROBADA = 2, RECHAZADA = 3;
@@ -31,6 +32,10 @@ public class Reserva implements Serializable {
 
     @SerializedName("estado")
     private int estado;
+
+    @SerializedName("hora")
+    private Date hora;
+
     //endregion
 
     //region Acceors/Mutators
@@ -97,5 +102,8 @@ public class Reserva implements Serializable {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    public Date getHora() { return hora; }
+
     //endregion
 }

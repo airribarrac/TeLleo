@@ -28,13 +28,13 @@ public class ViajesReservados extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viajes_reservados);
-        Intent i = getIntent();
+        /*Intent i = getIntent();
         String origen = i.getStringExtra("origen");
         String destino = i.getStringExtra("destino");
         String finicio = i.getStringExtra("finicio");
-        String ffinal = i.getStringExtra("ffinal");
+        String ffinal = i.getStringExtra("ffinal");*/
         Call<List<Reserva>> call = TeLleoService.getService(ViajesReservados.this).
-                getReservaPasajero("test1");
+                getReservaPasajero("dongato");
         Log.v("call",call.request().url().toString());
         call.enqueue(new Callback<List<Reserva>>() {
             @Override
@@ -66,16 +66,10 @@ public class ViajesReservados extends AppCompatActivity {
                     View child = getLayoutInflater().inflate(R.layout.fragmentviajebuscado,null);
                     ((TextView)child.findViewById(R.id.origen)).setText(r.getOrigen());
                     ((TextView)child.findViewById(R.id.destino)).setText(r.getDestino());
-                    Reserva res = new Reserva();
-                    res.setAsientos(1);
-                    res.setOrigen(r.getOrigen());
-                    res.setDestino(r.getDestino());
-                    res.setMaletas(1);
-                    //agregar parte de login (shared preferences?)
-                    res.setPasajero("dongato");
-                    res.setIdViaje(r.getId());
-                    ((Button)child.findViewById(R.id.botonreservar))
-                            .setOnClickListener(new ViajesReservados.ReservaClickListener(res,r.getId()));
+                    ((TextView)child.findViewById(R.id.fecha)).setText(r.getHora().toString());
+
+                    ((Button)child.findViewById(R.id.CancelButton))
+                            .setOnClickListener(new ViajesReservados.ReservaClickListener(r.getPasajero(),r.getId()));
                     ll.addView(child);
                 }
             }
@@ -88,15 +82,15 @@ public class ViajesReservados extends AppCompatActivity {
 
     }
     private class ReservaClickListener implements View.OnClickListener{
-        private Reserva r;
+        private String r;
         private int id;
-        public ReservaClickListener(Reserva rr,int idviaje){
-            r=rr;
-            id=idviaje;
+        public ReservaClickListener(String Pasajero,int idReserva){
+            r=Pasajero;
+            id=idReserva;
         }
         @Override
         public void onClick(View view) {
-            //mandar reserva a api
+            //borrar reserva en api
             Call<ResponseBody> call = TeLleoService.getService(ViajesReservados.this).
                     deleteReserva(r,id);
             Log.v("call",call.request().url().toString());
