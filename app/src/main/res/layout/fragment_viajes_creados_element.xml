@@ -61,4 +61,22 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="5dp"
         android:layout_below="@id/vehiculo" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/equipajemax"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/terminar_viaje"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Terminar" />
+
+        <Button
+            android:id="@+id/cancelar_viaje"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Cancelar" />
+    </LinearLayout>
 </RelativeLayout>

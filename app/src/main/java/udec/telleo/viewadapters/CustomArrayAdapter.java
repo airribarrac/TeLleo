@@ -37,4 +37,14 @@ abstract public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
     public List<T> getCollection(){
         return collection;
     }
+
+    public void deleteItem(int i){
+        collection.remove(i);
+        notifyDataSetChanged();
+    }
+
+    public void deleteItem(T object){
+        collection.remove(object);
+        notifyDataSetChanged();
+    }
 }
