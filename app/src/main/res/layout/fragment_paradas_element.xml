@@ -6,21 +6,19 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textCiudad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="CIUDAD"
         android:textColor="@android:color/black"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/removeButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
@@ -31,21 +29,37 @@
         app:srcCompat="@android:drawable/ic_delete" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textHoraS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="24dp"
         android:text="HORA"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintEnd_toStartOf="@+id/removeButton"
+        app:layout_constraintStart_toEndOf="@+id/textCiudad"
+        app:layout_constraintTop_toTopOf="@+id/textCiudad" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/textTarifa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:text="MONTO"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintStart_toEndOf="@+id/textView6" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textHoraS"
+        app:layout_constraintTop_toBottomOf="@+id/textHoraS" />
+
+    <TextView
+        android:id="@+id/textDireccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCiudad" />
 
 </android.support.constraint.ConstraintLayout>

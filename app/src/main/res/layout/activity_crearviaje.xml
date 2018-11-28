@@ -25,30 +25,31 @@
     </android.support.constraint.ConstraintLayout>
 
     <EditText
-        android:id="@+id/textHora"
+        android:id="@+id/textHoraS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="11dp"
         android:ems="10"
-        android:hint="Ingrese Hora"
+        android:focusable="false"
+        android:hint="Hora de salida"
         android:inputType="time"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFecha" />
 
     <EditText
         android:id="@+id/textFecha"
         android:layout_width="wrap_content"
+        android:focusable="false"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginBottom="11dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Ingrese fecha del viaje"
         android:inputType="date"
-        app:layout_constraintBottom_toTopOf="@+id/textHora"
+        app:layout_constraintBottom_toTopOf="@+id/textHoraS"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/frame1"
@@ -71,62 +72,27 @@
             tools:layout_editor_absoluteY="310dp" />
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/frame2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame1">
-
-        <fragment
-            android:id="@+id/fdestino"
-            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="310dp" />
-    </FrameLayout>
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="139dp"
         android:layout_height="38dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
         android:text="Ingrese ciudades"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textDestino"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHora" />
+        app:layout_constraintTop_toBottomOf="@+id/textHoraS" />
 
     <Button
         android:id="@+id/confirmar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="186dp"
-        android:layout_marginEnd="42dp"
         android:layout_marginTop="8dp"
         android:text="Confirmar"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame2" />
-
-    <Button
-        android:id="@+id/mapita"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:text="Ver Mapa"
-        app:layout_constraintBottom_toBottomOf="@+id/confirmar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/confirmar" />
+        app:layout_constraintTop_toBottomOf="@+id/frame1" />
 
 </android.support.constraint.ConstraintLayout>

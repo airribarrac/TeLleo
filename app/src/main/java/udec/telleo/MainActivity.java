@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("datos",MODE_PRIVATE);
         sp.edit().putString("usuario",usuario.getText().toString());
         sp.edit().putString("contraseña",contrasenia.getText().toString());
-        Intent i = new Intent(this,ElegirViaje.class);
+        Intent i = new Intent(this,PasajeroActivity.class);
         startActivity(i);
     }
 

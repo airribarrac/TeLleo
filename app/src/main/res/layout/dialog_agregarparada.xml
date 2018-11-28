@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Ingreso de parada"
         android:textColor="@android:color/black"
         android:textSize="24sp"
@@ -23,6 +23,8 @@
         android:id="@+id/flayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -49,18 +51,52 @@
         android:ems="10"
         android:hint="Tarifa"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/flayout"
+        app:layout_constraintEnd_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/flayout" />
 
     <EditText
-        android:id="@+id/textHora"
+        android:id="@+id/textHoraS"
+        android:focusable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Hora"
         android:inputType="time"
+        android:selectAllOnFocus="false"
+        app:layout_constraintEnd_toEndOf="@+id/textTarifa"
         app:layout_constraintStart_toStartOf="@+id/textTarifa"
         app:layout_constraintTop_toBottomOf="@+id/textTarifa" />
+
+    <Button
+        android:id="@+id/botonContinuar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Continuar"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textHoraS"
+        app:layout_constraintTop_toBottomOf="@+id/textHoraS" />
+
+    <Button
+        android:id="@+id/botonCancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Cancelar"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/botonContinuar"
+        app:layout_constraintStart_toStartOf="@+id/textHoraS"
+        app:layout_constraintTop_toBottomOf="@+id/textHoraS" />
 
 </android.support.constraint.ConstraintLayout>

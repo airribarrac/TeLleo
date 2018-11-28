@@ -1,64 +1,113 @@
 package udec.telleo;
 
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.w3c.dom.Document;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import udec.telleo.apiclient.TeLleoService;
 import udec.telleo.model.Viaje;
 
 public class crearviaje extends AppCompatActivity {
-
+    private EditText fecha,hora;
+    private PlaceAutocompleteFragment pafo,pafd;
+    private Place[] orDes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crearviaje);
+        orDes = new Place[2];
+        orDes[0]=orDes[1]=null;
+        fecha = this.findViewById(R.id.textFecha);
+        fecha.setOnClickListener(new crearviaje.FechaListener(fecha));
+        hora = this.findViewById(R.id.textHoraS);
+        hora.setOnClickListener(new crearviaje.HoraListener(hora));
+        pafo = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.forigen);
+        AutocompleteFilter typeFilter1 = new AutocompleteFilter.Builder().setCountry("CL")
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS).build();
+        pafo.setFilter(typeFilter1);
+        pafo.getView().findViewById(R.id.place_autocomplete_clear_button).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        pafo.setText("");
+                        view.setVisibility(View.GONE);
+                        orDes[0]=null;
+                    }
+                }
+        );
+        pafo.setOnPlaceSelectedListener(new crearviaje.TextoListener(orDes,true));
+        ((EditText)pafo.getView().findViewById(R.id.place_autocomplete_search_input)).setHint("Origen");
+
+
+
         //Boton de Confirmar
         Button conf = findViewById(R.id.confirmar);
         conf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Para ver si lee.
+                if(orDes[0]==null){
+                    Toast.makeText(getBaseContext(),"Ingrese direccion",Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                if(hora.getText().toString().equals("")){
+                    Toast.makeText(getBaseContext(),"Ingrese hora",Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                if(fecha.getText().toString().equals("")){
+                    Toast.makeText(getBaseContext(),"Ingrese fecha",Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                String[] partes = orDes[0].getAddress().toString().split(",");
+                int largo = partes.length;
+                if(largo<4){
+                    Toast.makeText(getBaseContext(),"Ingrese direccion completa",Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                Intent i = new Intent(crearviaje.this,AgregarParadas.class);
+                i.putExtra("direccion",partes[0]);
+                i.putExtra("ciudad",partes[1]);
+                i.putExtra("hora",hora.getText().toString());
+                i.putExtra("fecha",fecha.getText().toString());
+                startActivity(i);
                 Log.d("Fecha: ",getFecha());
                 Log.d("Hora: ",getHora());
                 Log.d("Origen: ",getOrigen());
                 Log.d("Destino: ",getDestino());
                 //Agregar datos a un viaje.
                 Viaje v = new Viaje();
+                /*
                 v.setDestino(getDestino());
+
                 v.setOrigen(getOrigen());
                 v.setEquipajeMaximo(5);
                 //Transformar la fecha a Date.
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+                 */
+                /*
                 String dateInString = getFecha() + "T" + getHora() + "Z";
                 try {
 
@@ -86,28 +135,11 @@ public class crearviaje extends AppCompatActivity {
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Log.d("ERROR", t.toString());
                     }
-                });
+                });*/
             }
         });
         //El boton que accede al mapa.
-        Button mapa = findViewById(R.id.mapita);
-        mapa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-               /* LatitudeAndLongitudeWithPincode lt = new LatitudeAndLongitudeWithPincode();
-                try {
-                    String[] st = LatitudeAndLongitudeWithPincode.getLatLongPositions("Concepcion, Chile");
-                    System.out.println(st[0]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
-                Intent i = new Intent(crearviaje.this, MapsActivity.class);
-                i.putExtra("origen", getOrigen());
-                i.putExtra("destino",getDestino());
-                startActivity(i);
-            }
-        });
     }
 
     private String getFecha()
@@ -116,7 +148,7 @@ public class crearviaje extends AppCompatActivity {
     }
     private String getHora()
     {
-        return ((EditText)findViewById(R.id.textHora)).getText().toString();
+        return ((EditText)findViewById(R.id.textHoraS)).getText().toString();
     }
     private String getOrigen()
     {
@@ -124,55 +156,80 @@ public class crearviaje extends AppCompatActivity {
     }
     private String getDestino()
     {
-        return ((EditText)findViewById(R.id.textDestino)).getText().toString();
+        return "agioma";
     }
-}
-
-/**
- * This class will get the lat long values.
- */
-class LatitudeAndLongitudeWithPincode
-{
-    public static void main(String[] args) throws Exception
-    {
-        System.setProperty("java.net.useSystemProxies", "true");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Please enter a location:");
-        String postcode=reader.readLine();
-        String latLongs[] = getLatLongPositions(postcode);
-        System.out.println("Latitude: "+latLongs[0]+" and Longitude: "+latLongs[1]);
-    }
-
-    public static String[] getLatLongPositions(String address) throws Exception
-    {
-        int responseCode = 0;
-        String api = "http://maps.googleapis.com/maps/api/geocode/xml?address=" + URLEncoder.encode(address, "UTF-8") + "&sensor=true";
-        System.out.println("URL : "+api);
-        URL url = new URL(api);
-        HttpURLConnection httpConnection = (HttpURLConnection)url.openConnection();
-        httpConnection.connect();
-        responseCode = httpConnection.getResponseCode();
-        if(responseCode == 200)
-        {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();;
-            Document document = builder.parse(httpConnection.getInputStream());
-            XPathFactory xPathfactory = XPathFactory.newInstance();
-            XPath xpath = xPathfactory.newXPath();
-            XPathExpression expr = xpath.compile("/GeocodeResponse/status");
-            String status = (String)expr.evaluate(document, XPathConstants.STRING);
-            if(status.equals("OK"))
-            {
-                expr = xpath.compile("//geometry/location/lat");
-                String latitude = (String)expr.evaluate(document, XPathConstants.STRING);
-                expr = xpath.compile("//geometry/location/lng");
-                String longitude = (String)expr.evaluate(document, XPathConstants.STRING);
-                return new String[] {latitude, longitude};
-            }
-            else
-            {
-                throw new Exception("Error from the API - response status: "+status);
-            }
+    private class FechaListener implements View.OnClickListener{
+        private EditText t;
+        FechaListener(EditText et){
+            t=et;
         }
-        return null;
+        @Override
+        public void onClick(View view) {
+
+            Calendar calendar = Calendar.getInstance();
+            int yy = calendar.get(Calendar.YEAR);
+            int dd = calendar.get(Calendar.DAY_OF_MONTH);
+            int mm = calendar.get(Calendar.MONTH);
+            DatePickerDialog dpd = new  DatePickerDialog(crearviaje.this,
+                    AlertDialog.THEME_HOLO_LIGHT,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int y, int m, int d) {
+                            String day = String.format("%02d",d);
+                            String year = String.format("%d",y);
+                            String month = String.format("%02d",m+1);
+                            t.setText(day+"/"+month+"/"+year);
+                        }
+                    }
+                    ,yy,mm,dd);
+            dpd.show();
+        }
+    }
+    private class HoraListener implements View.OnClickListener{
+        private EditText t;
+        HoraListener(EditText et){
+            t=et;
+        }
+        @Override
+        public void onClick(View view) {
+
+            Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            TimePickerDialog tpd = new TimePickerDialog(crearviaje.this,
+                    TimePickerDialog.THEME_HOLO_LIGHT,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                            t.setText(String.format("%02d",selectedHour )+ ":" +
+                                    String.format("%02d",selectedMinute  ));
+                        }
+                    }
+                    , hour, minute,true);
+            tpd.show();
+        }
+    }
+    private class TextoListener implements PlaceSelectionListener{
+        private Place[] orDes;
+        private boolean esOr;
+        TextoListener(Place[] par,boolean v){
+            orDes=par;
+            esOr=v;
+        }
+        @Override
+        public void onPlaceSelected(Place place) {
+
+            if(esOr) {
+                orDes[0]=place;
+            } else {
+                orDes[1]=place;
+            }
+            Log.v("ALO","LO CAMBIE A "+place.getName() );
+        }
+
+        @Override
+        public void onError(Status status) {
+            Log.e("Error",status.getStatusMessage());
+        }
     }
 }
