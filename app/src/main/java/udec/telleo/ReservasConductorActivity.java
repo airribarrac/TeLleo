@@ -29,7 +29,7 @@ public class ReservasConductorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservas_conductor);
         viaje = (Viaje)getIntent().getSerializableExtra("viaje");
         ReservasAdapter adapter = new ReservasAdapter(this, R.id.reservas_viaje_container, viaje);
-        String username = getSharedPreferences("datos", MODE_PRIVATE).getString("username", "");
+        String username = getSharedPreferences("datos", MODE_PRIVATE).getString("usuario", "");
         actualizarReservas(username, viaje.getId(), adapter);
         ListView view = findViewById(R.id.reservas_viaje_container);
         view.setAdapter(adapter);
@@ -40,10 +40,15 @@ public class ReservasConductorActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Reserva>>() {
             @Override
             public void onResponse(Call<List<Reserva>> call, Response<List<Reserva>> response) {
-                adapter.setCollection(response.body());
-                Log.d("RESERVAS: ", "");
-                for(Reserva r : response.body()){
-                    Log.d("reserva:", r.toString());
+                if(response.code() == 200) {
+                    adapter.setCollection(response.body());
+                    Log.d("RESERVAS: ", "");
+                    for (Reserva r : response.body()) {
+                        Log.d("reserva:", r.toString());
+                    }
+                }
+                else{
+                    Log.d("VER RESERVAS", "NO SE CARGARON LAS RESERVAS, CODE:" + response.code());
                 }
             }
 

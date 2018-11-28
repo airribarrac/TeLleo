@@ -17,6 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import udec.telleo.apiclient.TeLleoService;
+import udec.telleo.model.LoginResponse;
+import udec.telleo.model.UserData;
+
 public class MainActivity extends AppCompatActivity {
     private EditText usuario,contrasenia;
     @Override
@@ -47,12 +54,39 @@ public class MainActivity extends AppCompatActivity {
     revisar si el qlo esta en la base o se quiere hacer el vio
      **/
         SharedPreferences sp = getSharedPreferences("datos",MODE_PRIVATE);
-        sp.edit().putString("usuario",usuario.getText().toString());
-        sp.edit().putString("contraseña",contrasenia.getText().toString());
-        Intent i = new Intent(this,ElegirViaje.class);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("usuario",usuario.getText().toString());
+        editor.putString("contraseña",contrasenia.getText().toString());
+        editor.commit();
+        Log.d("LOGIN", "usuario: " + usuario.getText().toString() );
+        login(usuario.getText().toString(), contrasenia.getText().toString());
+        Intent i = new Intent(this,ViajesCreadosActivity.class);
         startActivity(i);
     }
 
+
+    void login(String user, String pass){
+        UserData data = new UserData();
+        data.setUsername(user);
+        data.setPassword(pass);
+        Call<LoginResponse> call = TeLleoService.getService(this).login(data);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if(response.body().getValido()){
+                    //login
+                }
+                else{
+                    //rip
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+
+            }
+        });
+    }
 
     public void verViajesCreadosClick(View view) {
         Intent intent = new Intent(this, ViajesCreadosActivity.class);
