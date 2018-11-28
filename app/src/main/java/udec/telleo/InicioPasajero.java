@@ -14,9 +14,13 @@ public class InicioPasajero extends AppCompatActivity {
     }
 
     public void verViajesReservadosClick(View view) {
-
+        //No implementa3
+        //Intent intent = new Intent(this, verV.class);
+        //startActivity(intent);
     }
 
     public void buscarViajesClick(View view) {
+        Intent intent = new Intent(this, ElegirViaje.class);
+        startActivity(intent);
     }
 }

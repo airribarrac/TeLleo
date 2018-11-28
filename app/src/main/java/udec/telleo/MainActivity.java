@@ -1,6 +1,7 @@
 package udec.telleo;
 
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
@@ -34,59 +35,93 @@ public class MainActivity extends AppCompatActivity {
         contrasenia = findViewById(R.id.textcontra);
     }
 
-    public void loguear(View view) {
 
+
+    public boolean validarDatos(){
         if(usuario.getText().toString().equals("")){
             Toast.makeText(this,"Ingrese usuario",Toast.LENGTH_LONG).show();
             Animation shake = AnimationUtils.loadAnimation(getApplicationContext(),
                     R.anim.agitar);
             usuario.startAnimation(shake);
-            return;
+            return false;
         }
         if(contrasenia.getText().toString().equals("")){
             Toast.makeText(this,"Ingrese contraseña",Toast.LENGTH_LONG).show();
             Animation shake = AnimationUtils.loadAnimation(getApplicationContext(),
                     R.anim.agitar);
             contrasenia.startAnimation(shake);
-            return;
+            return false;
         }
-    /** TO DO
-    revisar si el qlo esta en la base o se quiere hacer el vio
-     **/
+        return true;
+    }
+
+    public void loguear(View view) {
+
+        if(!validarDatos())
+            return;
+        /** TO DO
+         revisar si el qlo esta en la base o se quiere hacer el vio
+         **/
         SharedPreferences sp = getSharedPreferences("datos",MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("usuario",usuario.getText().toString());
         editor.putString("contraseña",contrasenia.getText().toString());
         editor.commit();
         Log.d("LOGIN", "usuario: " + usuario.getText().toString() );
-        login(usuario.getText().toString(), contrasenia.getText().toString());
-        Intent i = new Intent(this,ViajesCreadosActivity.class);
-        startActivity(i);
+        UserData data = new UserData();
+        data.setUsername(usuario.getText().toString());
+        data.setPassword(contrasenia.getText().toString());
+        data.setEsConductor(false);
+        login(data);
+    }
+
+    public void loguearConductor(View view) {
+        if(!validarDatos())
+            return;
+        SharedPreferences sp = getSharedPreferences("datos",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("usuario",usuario.getText().toString());
+        editor.putString("contraseña",contrasenia.getText().toString());
+        editor.commit();
+        Log.d("LOGIN", "usuario: " + usuario.getText().toString());
+        UserData data = new UserData();
+        data.setUsername(usuario.getText().toString());
+        data.setPassword(contrasenia.getText().toString());
+        data.setEsConductor(true);
+        login(data);
+
     }
 
 
-    void login(String user, String pass){
-        UserData data = new UserData();
-        data.setUsername(user);
-        data.setPassword(pass);
+    void login(final UserData data){
         Call<LoginResponse> call = TeLleoService.getService(this).login(data);
+        final Context ctx = this;
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.body().getValido()){
-                    //login
+                    if(data.esConductor()) {
+                        Intent intent = new Intent(ctx, InicioConductorActivity.class);
+                        ctx.startActivity(intent);
+                    }
+                   else{
+                        Intent intent = new Intent(ctx, InicioPasajero.class);
+                        ctx.startActivity(intent);
+                    }
                 }
                 else{
-                    //rip
+                    Log.d("LOGIN", "FALLO EL LOGIN");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
 
+                Log.d("LOGIN", "CRASHEO EL LOGIN");
             }
         });
     }
+
 
     public void verViajesCreadosClick(View view) {
         Intent intent = new Intent(this, ViajesCreadosActivity.class);

@@ -1,5 +1,6 @@
 package udec.telleo;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,8 +14,12 @@ public class InicioConductorActivity extends AppCompatActivity {
     }
 
     public void verViajesCreadosClick(View view) {
+        Intent intent = new Intent(this, ViajesCreadosActivity.class);
+        startActivity(intent);
     }
 
     public void crearViajeClick(View view) {
+        Intent intent = new Intent(this, crearviaje.class);
+        startActivity(intent);
     }
 }
