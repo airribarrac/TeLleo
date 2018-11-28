@@ -110,13 +110,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 else{
+                    Context context = getApplicationContext();
+                    CharSequence text = "Sus credenciales son incorrectas o aún no se ha registrado :(";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                     Log.d("LOGIN", "FALLO EL LOGIN");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-
+                Context context = getApplicationContext();
+                CharSequence text = "Hubo un error en la autenticación, probablemente no" +
+                        " esté conectado a internet";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
                 Log.d("LOGIN", "CRASHEO EL LOGIN");
             }
         });
