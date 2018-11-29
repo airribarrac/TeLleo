@@ -43,4 +43,11 @@ public interface TeLleoServiceDefinition {
 
     @POST("login")
     Call<LoginResponse> login(@Body UserData data);
+
+    @GET("pasajeros/{pasajero}/reservas")
+    Call<List<Reserva>> getReservaPasajero(@Path("pasajero") String pasajero);
+
+    @DELETE("pasajeros/{pasajero}/reservas/{reservaID}")
+    Call<ResponseBody> deleteReserva(@Path("pasajero") String pasajero, @Path("reservaid") int reservaid);
+
 }
