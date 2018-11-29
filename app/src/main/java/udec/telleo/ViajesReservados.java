@@ -1,6 +1,7 @@
 package udec.telleo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,8 +34,9 @@ public class ViajesReservados extends AppCompatActivity {
         String destino = i.getStringExtra("destino");
         String finicio = i.getStringExtra("finicio");
         String ffinal = i.getStringExtra("ffinal");*/
+        SharedPreferences sp = getSharedPreferences("datos", MODE_PRIVATE);
         Call<List<Reserva>> call = TeLleoService.getService(ViajesReservados.this).
-                getReservaPasajero("dongato");
+                getReservaPasajero(sp.getString("usuario", ""));
         Log.v("call",call.request().url().toString());
         call.enqueue(new Callback<List<Reserva>>() {
             @Override
@@ -43,7 +45,7 @@ public class ViajesReservados extends AppCompatActivity {
                     Log.e("response","fallo "+response.code());
 
                 }
-                Log.d("respuesta","  "+response.toString());
+                Log.d("respuesta","  "+response.body().size());
                 LinearLayout ll = findViewById(R.id.llayout);
                 findViewById(R.id.progressBar).setClickable(false);
                 findViewById(R.id.progressBar).setVisibility(View.GONE);
@@ -63,12 +65,12 @@ public class ViajesReservados extends AppCompatActivity {
                     }
                     first = false;
                     Log.d("reserva:", r.toString());
-                    View child = getLayoutInflater().inflate(R.layout.fragmentviajebuscado,null);
+                    View child = getLayoutInflater().inflate(R.layout.fragment_viajes_reservados,null);
                     ((TextView)child.findViewById(R.id.origen)).setText(r.getOrigen());
                     ((TextView)child.findViewById(R.id.destino)).setText(r.getDestino());
                     ((TextView)child.findViewById(R.id.fecha)).setText(r.getHora().toString());
 
-                    ((Button)child.findViewById(R.id.CancelButton))
+                    child.findViewById(R.id.CancelButton)
                             .setOnClickListener(new ViajesReservados.ReservaClickListener(r.getPasajero(),r.getId()));
                     ll.addView(child);
                 }
