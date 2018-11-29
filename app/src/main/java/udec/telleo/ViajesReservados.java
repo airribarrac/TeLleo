@@ -80,7 +80,7 @@ public class ViajesReservados extends AppCompatActivity {
                     }
                     ((TextView)child.findViewById(R.id.origen)).setText(r.getOrigen());
                     ((TextView)child.findViewById(R.id.destino)).setText(r.getDestino());
-                    ((TextView)child.findViewById(R.id.fecha)).setText(r.getHora().toString());
+                    ((TextView)child.findViewById(R.id.fecha)).setText(r.getHora().toLocaleString());
                     ((TextView)child.findViewById(R.id.precio)).setText("$" + r.getPrecio());
 
                     child.findViewById(R.id.CancelButton)

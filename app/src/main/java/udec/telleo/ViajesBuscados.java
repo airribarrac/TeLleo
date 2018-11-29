@@ -68,7 +68,7 @@ public class ViajesBuscados extends AppCompatActivity {
                     final View child = getLayoutInflater().inflate(R.layout.fragmentviajebuscado,null);
                     ((TextView)child.findViewById(R.id.origen)).setText(r.getOrigen());
                     ((TextView)child.findViewById(R.id.destino)).setText(r.getDestino());
-                    ((TextView)child.findViewById(R.id.fecha)).setText(r.getFecha().toString());
+                    ((TextView)child.findViewById(R.id.fecha)).setText(r.getFecha().toLocaleString());
                     ((TextView)child.findViewById(R.id.vehiculo)).
                             setText(r.getVehiculo().getMarca()+" "+r.getVehiculo().getModelo());
                     Reserva res = new Reserva();

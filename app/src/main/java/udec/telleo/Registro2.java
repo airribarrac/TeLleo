@@ -20,6 +20,7 @@ public class Registro2 extends AppCompatActivity {
         user = i.getStringExtra("username");
         mail = i.getStringExtra("mail");
         contra = i.getStringExtra("contra");
+
     }
 
     public void completar(View v){

@@ -106,8 +106,10 @@ public class crearviaje extends AppCompatActivity {
                 v.setDestino(getDestino());
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");// yyyy-MM-dd'T'HH:mm:ssZ");
                 String[] fecha1 = getFecha().split("/");
-
-                String dateInString = getFecha() + " " + getHora();//fecha1[2] + "-" + fecha1[1] + "-" + fecha1[0] + "T" + getHora() + ":00" +  "Z";;
+                String[] horita = getHora().split(":");
+                int horita1 = Integer.parseInt(horita[0]) + 3 % 24;
+                horita[0] = horita1 >= 10 ? String.valueOf(horita1) : "0" + horita1;
+                String dateInString = getFecha() + " " + horita[0] + ":" + horita[1];//fecha1[2] + "-" + fecha1[1] + "-" + fecha1[0] + "T" + getHora() + ":00" +  "Z";;
                 Log.d("FECHA PARSEADA", dateInString);
                 try {
 

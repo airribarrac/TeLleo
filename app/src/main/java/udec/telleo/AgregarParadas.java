@@ -277,22 +277,28 @@ public class AgregarParadas extends AppCompatActivity {
             p.setOrden(orden++);
             p.setDireccion(((TextView)view.findViewById(R.id.textDireccion)).getText().toString());
             if(viaje == null)
-            Log.d("VIAJE", "ES NULLL");
-            Date date = viaje.getFecha();
-            String horaString = ((TextView)view.findViewById(R.id.textHoraS)).getText().toString();
-            int hora = Integer.parseInt(horaString.split(":")[0]);
-            int minuto = Integer.parseInt(horaString.split(":")[1]);
-            date.setHours(hora);
-            date.setMinutes(minuto);
-
-            p.setHora(date);
+                Log.d("VIAJE", "ES NULLL");
+            if(p.getOrden() > 1) {
+                Date date = (Date)viaje.getFecha().clone();
+                String horaString = ((TextView) view.findViewById(R.id.textHoraS)).getText().toString();
+                Log.d("HORA:", horaString);
+                int hora = Integer.parseInt(horaString.split(":")[0]);
+                int minuto = Integer.parseInt(horaString.split(":")[1]);
+                date.setHours((hora + 3) % 24);
+                date.setMinutes(minuto);
+                p.setHora(date);
+            }else{
+                p.setHora(viaje.getFecha());
+            }
             p.setIdViaje(viaje.getId());
             paradas.add(p);
             Log.d("PARADA", p.toString());
 
-            Log.d("FECHA", viaje.getFecha().toString());
+            Log.d("FECHA", p.getHora().toString());
         }
-
+        for(Parada pa : paradas){
+            Log.d("FECHA2", pa.getHora().toString());
+        }
         SharedPreferences sp = getSharedPreferences("datos", MODE_PRIVATE);
 
         Call<ResponseBody> call = TeLleoService.getService(getApplicationContext()).setParadas(sp.getString("usuario", ""), viaje.getId(), paradas);
