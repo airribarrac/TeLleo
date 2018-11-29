@@ -1,6 +1,7 @@
 package udec.telleo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -74,8 +75,9 @@ public class ViajesBuscados extends AppCompatActivity {
                     res.setOrigen(r.getOrigen());
                     res.setDestino(r.getDestino());
                     res.setMaletas(1);
-                    //agregar parte de login (shared preferences?)
-                    res.setPasajero("dongato");
+                    SharedPreferences sp = getSharedPreferences("datos", MODE_PRIVATE);
+                    String usuario = sp.getString("usuario", "");
+                    res.setPasajero(usuario);
                     res.setIdViaje(r.getId());
                     ((Button)child.findViewById(R.id.botonreservar))
                             .setOnClickListener(new ReservaClickListener(res,r.getId()));
@@ -106,7 +108,10 @@ public class ViajesBuscados extends AppCompatActivity {
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Toast.makeText(ViajesBuscados.this,"Reserva realizada",Toast.LENGTH_LONG).show();
+                    if(response.code() == 200)
+                        Toast.makeText(ViajesBuscados.this,"Reserva realizada",Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(ViajesBuscados.this,"No puedes solicitar mas reservas para este viaje",Toast.LENGTH_LONG).show();
                 }
 
                 @Override

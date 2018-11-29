@@ -25,6 +25,7 @@ import udec.telleo.model.Viaje;
 
 public class ViajesReservados extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,10 @@ public class ViajesReservados extends AppCompatActivity {
         String destino = i.getStringExtra("destino");
         String finicio = i.getStringExtra("finicio");
         String ffinal = i.getStringExtra("ffinal");*/
+        obtenerReservas();
+    }
+
+    private void obtenerReservas(){
         SharedPreferences sp = getSharedPreferences("datos", MODE_PRIVATE);
         Call<List<Reserva>> call = TeLleoService.getService(ViajesReservados.this).
                 getReservaPasajero(sp.getString("usuario", ""));
@@ -47,6 +52,7 @@ public class ViajesReservados extends AppCompatActivity {
                 }
                 Log.d("respuesta","  "+response.body().size());
                 LinearLayout ll = findViewById(R.id.llayout);
+                ll.removeAllViewsInLayout();
                 findViewById(R.id.progressBar).setClickable(false);
                 findViewById(R.id.progressBar).setVisibility(View.GONE);
                 findViewById(R.id.textobuscando).setClickable(false);
@@ -81,8 +87,8 @@ public class ViajesReservados extends AppCompatActivity {
                 Log.d("ERROR", t.toString());
             }
         });
-
     }
+
     private class ReservaClickListener implements View.OnClickListener{
         private String r;
         private int id;
@@ -100,6 +106,7 @@ public class ViajesReservados extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(ViajesReservados.this,"Reserva cancelada",Toast.LENGTH_LONG).show();
+                    obtenerReservas();
                 }
 
                 @Override

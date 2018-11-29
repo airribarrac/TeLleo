@@ -77,17 +77,21 @@ public class ReservasAdapter extends CustomArrayAdapter<Reserva> {
                     if(response.code() == 200){
                         reserva.setEstado(estado);
                         Context context = getContext();
-                        CharSequence text = "Se cambio el estado del viaje";
+                        CharSequence text = "Se cambio el estado de la reserva";
                         int duration = Toast.LENGTH_LONG;
                         textView.setText(texto);
+                        if(estado != 1 && estado != 2 ){
+                            deleteItem(reserva);
+                            text = "Se cancelo la reserva de " + reserva.getPasajero();
+                        }
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
                     }
                     else{
 
                         Context context = getContext();
-                        CharSequence text = "No se pudo cambiar el estado del viaje :( " + response.code();
-                        int duration = Toast.LENGTH_LONG;
+                        CharSequence text = "No se pudo cambiar el estado de la reserva :( " + response.code();
+                        int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();

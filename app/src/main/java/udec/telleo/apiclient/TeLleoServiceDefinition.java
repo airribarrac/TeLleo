@@ -42,7 +42,7 @@ public interface TeLleoServiceDefinition {
     Call<List<Reserva>> getReservaPasajero(@Path("pasajero") String pasajero);
 
     @DELETE("pasajeros/{pasajero}/reservas/{reservaID}")
-    Call<ResponseBody> deleteReserva(@Path("pasajero") String pasajero, @Path("reservaid") int reservaid);
+    Call<ResponseBody> deleteReserva(@Path("pasajero") String pasajero, @Path("reservaID") int reservaid);
 
     @DELETE("viajes/{viajeid}")
     Call<ResponseBody> deleteViaje(@Path("viajeid") int viajeid);
