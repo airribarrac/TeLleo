@@ -20,6 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import udec.telleo.apiclient.TeLleoService;
+import udec.telleo.model.Precio;
 import udec.telleo.model.Reserva;
 import udec.telleo.model.Viaje;
 
@@ -51,7 +52,7 @@ public class ViajesBuscados extends AppCompatActivity {
                 findViewById(R.id.textobuscando).setClickable(false);
                 findViewById(R.id.textobuscando).setVisibility(View.GONE);
                 boolean first=true;
-                for(Viaje r : response.body()){
+                for(final Viaje r : response.body()){
                     if(!first){
                         View v = new View(ViajesBuscados.this);
                         v.setLayoutParams(
@@ -64,7 +65,7 @@ public class ViajesBuscados extends AppCompatActivity {
                     }
                     first = false;
                     Log.d("reserva:", r.toString());
-                    View child = getLayoutInflater().inflate(R.layout.fragmentviajebuscado,null);
+                    final View child = getLayoutInflater().inflate(R.layout.fragmentviajebuscado,null);
                     ((TextView)child.findViewById(R.id.origen)).setText(r.getOrigen());
                     ((TextView)child.findViewById(R.id.destino)).setText(r.getDestino());
                     ((TextView)child.findViewById(R.id.fecha)).setText(r.getFecha().toString());
@@ -79,6 +80,19 @@ public class ViajesBuscados extends AppCompatActivity {
                     String usuario = sp.getString("usuario", "");
                     res.setPasajero(usuario);
                     res.setIdViaje(r.getId());
+                    Call<Precio> call2 = TeLleoService.getService(ViajesBuscados.this).getPrecio(r.getId(), r.getOrigen(), r.getDestino());
+                    call2.enqueue(new Callback<Precio>() {
+                        @Override
+                        public void onResponse(Call<Precio> call, Response<Precio> response) {
+                            if(response.code() == 200 && response.body() != null)
+                            ((TextView)child.findViewById(R.id.precio)).setText("$" + response.body().getPrecio());
+                        }
+
+                        @Override
+                        public void onFailure(Call<Precio> call, Throwable t) {
+
+                        }
+                    });
                     ((Button)child.findViewById(R.id.botonreservar))
                             .setOnClickListener(new ReservaClickListener(res,r.getId()));
                     ll.addView(child);

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,11 +28,22 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import udec.telleo.apiclient.TeLleoService;
+import udec.telleo.model.Parada;
+import udec.telleo.model.Viaje;
 
 import static java.lang.Integer.parseInt;
 
@@ -41,6 +53,7 @@ public class AgregarParadas extends AppCompatActivity {
     private ArrayList<View> viewList;
     private ArrayList<LatLng> placeList;
     private String fecha;
+    private Viaje viaje;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +64,11 @@ public class AgregarParadas extends AppCompatActivity {
         String hora = i.getStringExtra("hora");
         String direccion = i.getStringExtra("direccion");
         String ciudad = i.getStringExtra("ciudad");
+        viaje = (Viaje)i.getSerializableExtra("viaje");
         setContentView(R.layout.activity_agregar_paradas);
         ll = findViewById(R.id.llayoutparadas);
         dialogAgregar = new DialogAgregar(this);
+
         agregarParada(ciudad,hora,-1,direccion);
 
     }
@@ -244,6 +259,56 @@ public class AgregarParadas extends AppCompatActivity {
         }
     }
     public void subir(View v){
+        ArrayList<Parada> paradas = new ArrayList<>();
+        int orden = 1;
+        for(View view : viewList){
+            Parada p = new Parada();
+            p.setCiudad(((TextView)view.findViewById(R.id.textCiudad)).getText().toString().trim());
+            String precio = ((TextView)view.findViewById(R.id.textTarifa)).getText().toString().substring(1).replace(",", "").replace(".", "");
+            Log.d("PRECIO", precio);
+            Log.d("CIUDAD", p.getCiudad());
+
+            if(orden == 1){
+                p.setPrecio(0);
+            }
+            if(orden > 1) {
+                p.setPrecio(Integer.parseInt(precio));
+            }
+            p.setOrden(orden++);
+            p.setDireccion(((TextView)view.findViewById(R.id.textDireccion)).getText().toString());
+            if(viaje == null)
+            Log.d("VIAJE", "ES NULLL");
+            Date date = viaje.getFecha();
+            String horaString = ((TextView)view.findViewById(R.id.textHoraS)).getText().toString();
+            int hora = Integer.parseInt(horaString.split(":")[0]);
+            int minuto = Integer.parseInt(horaString.split(":")[1]);
+            date.setHours(hora);
+            date.setMinutes(minuto);
+
+            p.setHora(date);
+            p.setIdViaje(viaje.getId());
+            paradas.add(p);
+            Log.d("PARADA", p.toString());
+
+            Log.d("FECHA", viaje.getFecha().toString());
+        }
+
+        SharedPreferences sp = getSharedPreferences("datos", MODE_PRIVATE);
+
+        Call<ResponseBody> call = TeLleoService.getService(getApplicationContext()).setParadas(sp.getString("usuario", ""), viaje.getId(), paradas);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.code() == 200){
+                    Toast.makeText(getApplicationContext(),"Viaje creado exitosamente",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
         //subir a la base de datos
     }
 

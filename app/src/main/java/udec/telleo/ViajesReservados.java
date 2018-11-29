@@ -72,9 +72,16 @@ public class ViajesReservados extends AppCompatActivity {
                     first = false;
                     Log.d("reserva:", r.toString());
                     View child = getLayoutInflater().inflate(R.layout.fragment_viajes_reservados,null);
+                    if(r.getEstado() == 1){
+                        child.setBackgroundColor(getResources().getColor(R.color.LightGoldenrodYellow));
+                    }
+                    else{
+                        child.setBackgroundColor(getResources().getColor(R.color.LightGreen));
+                    }
                     ((TextView)child.findViewById(R.id.origen)).setText(r.getOrigen());
                     ((TextView)child.findViewById(R.id.destino)).setText(r.getDestino());
                     ((TextView)child.findViewById(R.id.fecha)).setText(r.getHora().toString());
+                    ((TextView)child.findViewById(R.id.precio)).setText("$" + r.getPrecio());
 
                     child.findViewById(R.id.CancelButton)
                             .setOnClickListener(new ViajesReservados.ReservaClickListener(r.getPasajero(),r.getId()));

@@ -36,6 +36,17 @@ public class Reserva implements Serializable {
     @SerializedName("hora")
     private Date hora;
 
+    @SerializedName("precio")
+    int precio;
+
+    public int getPrecio(){
+        return precio;
+    }
+
+    public void setPrecio(int precio){
+        this.precio = precio;
+    }
+
     //endregion
 
     //region Acceors/Mutators

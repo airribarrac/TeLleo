@@ -21,6 +21,17 @@ public class Parada implements Serializable {
     @SerializedName("direccion")
     private String direccion;
 
+    @SerializedName("precio")
+    private int precio;
+
+    public int getPrecio(){
+        return precio;
+    }
+
+    public void setPrecio(int precio){
+        this.precio = precio;
+    }
+
     public int getIdViaje() {
         return idViaje;
     }
@@ -59,5 +70,9 @@ public class Parada implements Serializable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String toString(){
+        return "" + idViaje + " " + ciudad + " " + orden;
     }
 }

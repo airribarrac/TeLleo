@@ -46,6 +46,7 @@ public class ReservasAdapter extends CustomArrayAdapter<Reserva> {
         ((TextView)convertView.findViewById(R.id.nombre_persona)).setText(reserva.getPasajero());
         ((TextView)convertView.findViewById(R.id.maletas)).setText("Maletas: " + reserva.getMaletas());
         ((TextView)convertView.findViewById(R.id.asientos)).setText("Asientos: " + reserva.getAsientos());
+        ((TextView)convertView.findViewById(R.id.precio)).setText("$" + reserva.getPrecio());
         String estado = reserva.getEstado() == 1 ? "pendiente" : (reserva.getEstado() == 2 ? "aprobada" : "rechazada");
         TextView estado_tv = (TextView)convertView.findViewById(R.id.estado);
         estado_tv.setText(estado);

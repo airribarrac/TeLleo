@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if(response.body().getValido()){
+
+                if(response.code() == 200 && response.body().getValido()){
                     if(data.esConductor()) {
                         Intent intent = new Intent(ctx, InicioConductorActivity.class);
                         ctx.startActivity(intent);

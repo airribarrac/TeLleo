@@ -26,6 +26,17 @@
         app:layout_constraintStart_toEndOf="@+id/origen" />
 
     <TextView
+        android:id="@+id/precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="$1500"
+        android:layout_toEndOf="@+id/origen"
+        app:layout_constraintBottom_toBottomOf="@+id/destino"
+        app:layout_constraintStart_toEndOf="@+id/destino" />
+
+    <TextView
         android:id="@+id/fecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,6 +46,8 @@
         android:text="15/07/2018 15:00:00"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/origen" />
+
+
 
     <ImageButton
         android:id="@+id/CancelButton"

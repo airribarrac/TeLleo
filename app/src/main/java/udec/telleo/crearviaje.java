@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,9 +22,15 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import udec.telleo.apiclient.TeLleoService;
 import udec.telleo.model.Viaje;
 
 public class crearviaje extends AppCompatActivity {
@@ -80,25 +87,60 @@ public class crearviaje extends AppCompatActivity {
                             .show();
                     return;
                 }
-                String[] partes = orDes[0].getAddress().toString().split(",");
+                final String[] partes = orDes[0].getAddress().toString().split(",");
                 int largo = partes.length;
                 if(largo<4){
                     Toast.makeText(getBaseContext(),"Ingrese direccion completa",Toast.LENGTH_LONG)
                             .show();
                     return;
                 }
-                Intent i = new Intent(crearviaje.this,AgregarParadas.class);
-                i.putExtra("direccion",partes[0]);
-                i.putExtra("ciudad",partes[1]);
-                i.putExtra("hora",hora.getText().toString());
-                i.putExtra("fecha",fecha.getText().toString());
-                startActivity(i);
+
+
                 Log.d("Fecha: ",getFecha());
                 Log.d("Hora: ",getHora());
                 Log.d("Origen: ",getOrigen());
                 Log.d("Destino: ",getDestino());
                 //Agregar datos a un viaje.
                 Viaje v = new Viaje();
+                v.setOrigen(getOrigen());
+                v.setDestino(getDestino());
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");// yyyy-MM-dd'T'HH:mm:ssZ");
+                String[] fecha1 = getFecha().split("/");
+
+                String dateInString = getFecha() + " " + getHora();//fecha1[2] + "-" + fecha1[1] + "-" + fecha1[0] + "T" + getHora() + ":00" +  "Z";;
+                Log.d("FECHA PARSEADA", dateInString);
+                try {
+
+                    Date date = formatter.parse(dateInString);
+                    v.setFecha(date);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                SharedPreferences sp = getSharedPreferences("datos", MODE_PRIVATE);
+                Call<Viaje> call = TeLleoService.getService(getApplicationContext()).postViaje(v, sp.getString("usuario", ""));
+                call.enqueue(new Callback<Viaje>() {
+                    @Override
+                    public void onResponse(Call<Viaje> call, Response<Viaje> response) {
+                        if(response.code() == 200 && response.body() != null) {
+                            Intent i = new Intent(crearviaje.this, AgregarParadas.class);
+                            i.putExtra("direccion", partes[0]);
+                            i.putExtra("ciudad", partes[1]);
+                            i.putExtra("hora", hora.getText().toString());
+                            i.putExtra("fecha", fecha.getText().toString());
+                            i.putExtra("viaje", response.body());
+                            startActivity(i);
+                        }
+                        else{
+                            Toast.makeText(crearviaje.this,"Hubo un error al crear el viaje",Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Viaje> call, Throwable t) {
+
+                    }
+                });
                 /*
                 v.setDestino(getDestino());
 
@@ -152,11 +194,11 @@ public class crearviaje extends AppCompatActivity {
     }
     private String getOrigen()
     {
-        return "poto";
+        return "origen";
     }
     private String getDestino()
     {
-        return "agioma";
+        return "destino";
     }
     private class FechaListener implements View.OnClickListener{
         private EditText t;

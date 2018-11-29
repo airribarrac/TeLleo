@@ -24,7 +24,15 @@
         android:text="Destino"
         app:layout_constraintBottom_toBottomOf="@+id/origen"
         app:layout_constraintStart_toEndOf="@+id/origen" />
-
+    <TextView
+        android:id="@+id/precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/destino"
+        android:text=" calculando precio..."
+        app:layout_constraintBottom_toBottomOf="@+id/destino"
+        app:layout_constraintStart_toEndOf="@+id/destino" />
     <TextView
         android:id="@+id/fecha"
         android:layout_width="wrap_content"
