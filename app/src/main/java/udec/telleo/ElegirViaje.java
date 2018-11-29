@@ -143,7 +143,7 @@ public class ElegirViaje extends AppCompatActivity {
             int dd = calendar.get(Calendar.DAY_OF_MONTH);
             int mm = calendar.get(Calendar.MONTH);
             DatePickerDialog dpd = new  DatePickerDialog(ElegirViaje.this,
-                    AlertDialog.THEME_HOLO_DARK,
+                    AlertDialog.THEME_HOLO_LIGHT,
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker datePicker, int y, int m, int d) {
@@ -166,6 +166,7 @@ public class ElegirViaje extends AppCompatActivity {
         }
         @Override
         public void onPlaceSelected(Place place) {
+
             if(esOr) {
                 orDes[0]=place;
             } else {

@@ -40,7 +40,9 @@
         <activity android:name=".PasajeroActivity" />
         <activity android:name=".Registro" />
         <activity android:name=".Registro2" />
-        <activity android:name=".ViajesReservados"></activity>
+        <activity android:name=".AgregarParadas" />
+        <activity android:name=".InicioPasajero" />
+        <activity android:name=".InicioConductorActivity"></activity>
     </application>
 
 </manifest>
